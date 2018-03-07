@@ -137,7 +137,7 @@ docker exec -it -u postgres `docker ps | grep councilmatic_postgres | cut -f1 -d
 After you are logged into the container, run the following command:
 
 ```
-createdb yourcity_councilmatic
+createdb oakland_councilmatic
 ```
 
 It should run without any errors.  After you're done, run the following command to log out of the container:
