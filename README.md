@@ -259,19 +259,7 @@ Database | opencivicdata
 
 _If you want to set a different password, you can change it in the docker-compose.yml file.  If you change the password, you will also have to change the database password in "councilmatic/councilmatic/settings_deployment.py" for Django otherwise, the webserver will not be able to connect to the database._
 
-If you restarted your webserver environment and cannot connect to the database port, 6432, from your host, try restarting Docker.  There is a bug with the Mac version of Docker where shutting down your Docker container doesn't release the port.  
-
-1. Quit Docker from the menu bar:
-
-![Docker Control][image2]
-
-2. Restart it from Applications:
-
-![Docker app][image3]
-
-Docker might take a little while to restart.
-
-3. Try starting up your webserver environment again
+If you restarted your webserver environment and cannot connect to the database port, 6432, from your host, try restarting Docker.  See the "Gotchas" section below. 
 
 # Viewing the Website with Your Browser
 
@@ -301,3 +289,19 @@ http://0.0.0.0:8001
 ```
 
 4. Check the console for errors in django's logs.
+
+# Gotchas
+
+On Mac OS, Docker Compose has this bug where sometimes it doesn't release the mapped ports after you do "docker-compose down". 
+
+1. Quit Docker from the menu bar:
+
+![Docker Control][image2]
+
+2. Restart it from Applications:
+
+![Docker app][image3]
+
+Docker might take a little while to restart.
+
+3. Try starting up your webserver environment again
