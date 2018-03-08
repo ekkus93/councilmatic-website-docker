@@ -145,14 +145,20 @@ It should run without any errors.  After you're done, run the following command 
 exit
 ```
 
-### Create Admin User for the webserver
-
 Log into the webserver container:
 ```
 docker exec -it `docker ps | grep councilmatic_website | cut -f1 -d ' '` bash
 ```
 
-Run the following command to set the username and password for your admin user:
+Run the following commands:
+```
+python manage.py migrate --noinput
+python manage.py createcachetable
+```
+
+### Create Admin User for the webserver
+
+You should still be logged into the webserver container.  Run the following command to set the username and password for your admin user:
 ```
 python manage.py createsuperuser
 ```
@@ -267,3 +273,31 @@ Docker might take a little while to restart.
 
 3. Try starting up your webserver environment again
 
+# Viewing the Website with Your Browser
+
+Port 8000 from the django container is mapped to your host's port 8000.  To view the website with your browser, go to:
+```
+http://127.0.0.1:8000/
+```
+
+# Debugging Django
+
+Port 8001 from the django container is also mapped to your host's port 8001.  You can start a second instance of django by doing the following:
+
+1. Log into the webserver container:
+
+```
+docker exec -it `docker ps | grep councilmatic_website | cut -f1 -d ' '` bash
+```
+
+2. Manually start a second instance of django on port 8001:
+```
+python manage.py runserver 0.0.0.0:8001
+```
+
+3. Open a browser and go to:
+```
+http://0.0.0.0:8001
+```
+
+4. Check the console for errors in django's logs.

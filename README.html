@@ -398,15 +398,18 @@ $(document).ready(function () {
 <p>First, log into the database container:</p>
 <pre><code>docker exec -it -u postgres `docker ps | grep councilmatic_postgres | cut -f1 -d ' '` bash</code></pre>
 <p>After you are logged into the container, run the following command:</p>
-<pre><code>createdb yourcity_councilmatic</code></pre>
+<pre><code>createdb oakland_councilmatic</code></pre>
 <p>It should run without any errors. After you’re done, run the following command to log out of the container:</p>
 <pre><code>exit</code></pre>
+<p>Log into the webserver container:</p>
+<pre><code>docker exec -it `docker ps | grep councilmatic_website | cut -f1 -d ' '` bash</code></pre>
+<p>Run the following commands:</p>
+<pre><code>python manage.py migrate --noinput
+python manage.py createcachetable</code></pre>
 </section>
 <section id="create-admin-user-for-the-webserver" class="level3">
 <h3>Create Admin User for the webserver</h3>
-<p>Log into the webserver container:</p>
-<pre><code>docker exec -it `docker ps | grep councilmatic_website | cut -f1 -d ' '` bash</code></pre>
-<p>Run the following command to set the username and password for your admin user:</p>
+<p>You should still be logged into the webserver container. Run the following command to set the username and password for your admin user:</p>
 <pre><code>python manage.py createsuperuser</code></pre>
 <p>After you’re done, run the following command to log out of the container:</p>
 <pre><code>exit</code></pre>
@@ -516,6 +519,30 @@ $(document).ready(function () {
 </ol>
 </section>
 </section>
+</section>
+<section id="viewing-the-website-with-your-browser" class="level1">
+<h1>Viewing the Website with Your Browser</h1>
+<p>Port 8000 from the django container is mapped to your host’s port 8000. To view the website with your browser, go to:</p>
+<pre><code>http://127.0.0.1:8000/</code></pre>
+</section>
+<section id="debugging-django" class="level1">
+<h1>Debugging Django</h1>
+<p>Port 8001 from the django container is also mapped to your host’s port 8001. You can start a second instance of django by doing the following:</p>
+<ol type="1">
+<li>Log into the webserver container:</li>
+</ol>
+<pre><code>docker exec -it `docker ps | grep councilmatic_website | cut -f1 -d ' '` bash</code></pre>
+<ol start="2" type="1">
+<li>Manually start a second instance of django on port 8001:</li>
+</ol>
+<pre><code>python manage.py runserver 0.0.0.0:8001</code></pre>
+<ol start="3" type="1">
+<li>Open a browser and go to:</li>
+</ol>
+<pre><code>http://0.0.0.0:8001</code></pre>
+<ol start="4" type="1">
+<li>Check the console for errors in django’s logs.</li>
+</ol>
 </section>
 
 
